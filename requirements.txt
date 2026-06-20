@@ -1,0 +1,3 @@
+# SQL → RE Diagram Generator
+# 纯 Python 标准库实现，无需额外依赖
+# Python >= 3.8
