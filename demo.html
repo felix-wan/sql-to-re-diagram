@@ -463,41 +463,41 @@
 const DATA = [
   {
     "statement": 1,
-    "sql": "SELECT '20260619' ftime ,a.uid ,a.active_level ,a.passive_type ,CASE WHEN b.uid is not null and c.uid is not null then 'new&old' WHEN b.uid is not null and c.uid is null then 'old' WHEN b.uid is null ...",
+    "sql": "SELECT '20260620' AS ftime ,a.user_id ,a.activity_level ,a.interaction_type ,CASE WHEN b.user_id IS NOT NULL AND c.user_id IS NOT NULL THEN 'active&new' WHEN b.user_id IS NOT NULL AND c.user_id IS NUL...",
     "databases": [
       {
-        "name": "sng_qmkg_rec",
+        "name": "analytics",
         "tables": [
           {
-            "key": "sng_qmkg_rec.qmkg_user_passive_features_rd",
-            "db": "sng_qmkg_rec",
-            "table": "qmkg_user_passive_features_rd",
+            "key": "analytics.user_daily_features",
+            "db": "analytics",
+            "table": "user_daily_features",
             "alias": "a",
             "fields": [
               {
-                "name": "uid",
+                "name": "user_id",
                 "comment": ""
               },
               {
-                "name": "active_level",
+                "name": "activity_level",
                 "comment": ""
               },
               {
-                "name": "passive_type",
+                "name": "interaction_type",
                 "comment": ""
               }
             ],
             "relationships": [
               {
-                "target_table": "u_isd_qmusic.fd_qmkg_user_robot_base_info",
-                "source_field": "uid",
-                "target_field": "uid",
+                "target_table": "core.user_base_info",
+                "source_field": "user_id",
+                "target_field": "user_id",
                 "join_type": "LEFT JOIN"
               },
               {
-                "target_table": "sng_qqmusic_log.msg_h_qmkg_robot_action",
-                "source_field": "uid",
-                "target_field": "touid",
+                "target_table": "logs.recommend_action_log",
+                "source_field": "user_id",
+                "target_field": "target_user_id",
                 "join_type": "LEFT JOIN"
               }
             ]
@@ -505,16 +505,16 @@ const DATA = [
         ]
       },
       {
-        "name": "u_isd_qmusic",
+        "name": "core",
         "tables": [
           {
-            "key": "u_isd_qmusic.fd_qmkg_user_robot_base_info",
-            "db": "u_isd_qmusic",
-            "table": "fd_qmkg_user_robot_base_info",
+            "key": "core.user_base_info",
+            "db": "core",
+            "table": "user_base_info",
             "alias": "b",
             "fields": [
               {
-                "name": "uid",
+                "name": "user_id",
                 "comment": ""
               }
             ],
@@ -523,24 +523,24 @@ const DATA = [
         ]
       },
       {
-        "name": "sng_qqmusic_log",
+        "name": "logs",
         "tables": [
           {
-            "key": "sng_qqmusic_log.msg_h_qmkg_robot_action",
-            "db": "sng_qqmusic_log",
-            "table": "msg_h_qmkg_robot_action",
+            "key": "logs.recommend_action_log",
+            "db": "logs",
+            "table": "recommend_action_log",
             "alias": "c",
             "fields": [
               {
-                "name": "uid",
+                "name": "user_id",
                 "comment": ""
               },
               {
-                "name": "algorithm_id",
+                "name": "recommend_algo_id",
                 "comment": ""
               },
               {
-                "name": "touid",
+                "name": "target_user_id",
                 "comment": ""
               }
             ],
@@ -551,68 +551,68 @@ const DATA = [
     ],
     "tables": [
       {
-        "key": "sng_qmkg_rec.qmkg_user_passive_features_rd",
-        "db": "sng_qmkg_rec",
-        "table": "qmkg_user_passive_features_rd",
+        "key": "analytics.user_daily_features",
+        "db": "analytics",
+        "table": "user_daily_features",
         "alias": "a",
         "fields": [
           {
-            "name": "uid",
+            "name": "user_id",
             "comment": ""
           },
           {
-            "name": "active_level",
+            "name": "activity_level",
             "comment": ""
           },
           {
-            "name": "passive_type",
+            "name": "interaction_type",
             "comment": ""
           }
         ],
         "relationships": [
           {
-            "target_table": "u_isd_qmusic.fd_qmkg_user_robot_base_info",
-            "source_field": "uid",
-            "target_field": "uid",
+            "target_table": "core.user_base_info",
+            "source_field": "user_id",
+            "target_field": "user_id",
             "join_type": "LEFT JOIN"
           },
           {
-            "target_table": "sng_qqmusic_log.msg_h_qmkg_robot_action",
-            "source_field": "uid",
-            "target_field": "touid",
+            "target_table": "logs.recommend_action_log",
+            "source_field": "user_id",
+            "target_field": "target_user_id",
             "join_type": "LEFT JOIN"
           }
         ]
       },
       {
-        "key": "u_isd_qmusic.fd_qmkg_user_robot_base_info",
-        "db": "u_isd_qmusic",
-        "table": "fd_qmkg_user_robot_base_info",
+        "key": "core.user_base_info",
+        "db": "core",
+        "table": "user_base_info",
         "alias": "b",
         "fields": [
           {
-            "name": "uid",
+            "name": "user_id",
             "comment": ""
           }
         ],
         "relationships": []
       },
       {
-        "key": "sng_qqmusic_log.msg_h_qmkg_robot_action",
-        "db": "sng_qqmusic_log",
-        "table": "msg_h_qmkg_robot_action",
+        "key": "logs.recommend_action_log",
+        "db": "logs",
+        "table": "recommend_action_log",
         "alias": "c",
         "fields": [
           {
-            "name": "uid",
+            "name": "user_id",
             "comment": ""
           },
           {
-            "name": "algorithm_id",
+            "name": "recommend_algo_id",
             "comment": ""
           },
           {
-            "name": "touid",
+            "name": "target_user_id",
             "comment": ""
           }
         ],
@@ -621,17 +621,17 @@ const DATA = [
     ],
     "relationships": [
       {
-        "source": "sng_qmkg_rec.qmkg_user_passive_features_rd",
-        "target": "u_isd_qmusic.fd_qmkg_user_robot_base_info",
-        "source_field": "uid",
-        "target_field": "uid",
+        "source": "analytics.user_daily_features",
+        "target": "core.user_base_info",
+        "source_field": "user_id",
+        "target_field": "user_id",
         "join_type": "LEFT JOIN"
       },
       {
-        "source": "sng_qmkg_rec.qmkg_user_passive_features_rd",
-        "target": "sng_qqmusic_log.msg_h_qmkg_robot_action",
-        "source_field": "uid",
-        "target_field": "touid",
+        "source": "analytics.user_daily_features",
+        "target": "logs.recommend_action_log",
+        "source_field": "user_id",
+        "target_field": "target_user_id",
         "join_type": "LEFT JOIN"
       }
     ]

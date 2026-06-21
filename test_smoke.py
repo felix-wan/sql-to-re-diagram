@@ -20,7 +20,7 @@ FROM sng_db::user_table a
 LEFT JOIN dim_db::info_table b ON a.uid = b.uid
 WHERE a.ftime = '20260619'"""
     parser = SQLParser()
-    results = parser.parse_file(str(PROJ / "test.sql"))  # use existing file
+    results = parser.parse_file(str(PROJ / "demo.sql"))  # use demo file
     assert len(results) >= 1, "Should parse at least one statement"
     for r in results:
         assert "tables" in r, "Result must contain tables"
@@ -49,7 +49,7 @@ def test_parse_multi_statements():
 def test_generate_html():
     parser = SQLParser()
     generator = REDiagramGenerator()
-    results = parser.parse_file(str(PROJ / "test.sql"))
+    results = parser.parse_file(str(PROJ / "demo.sql"))
     with tempfile.TemporaryDirectory() as tmpdir:
         out_path = str(Path(tmpdir) / "out.html")
         generator.generate(results, out_path)
@@ -63,7 +63,7 @@ def test_generate_html():
 
 def test_relationships():
     parser = SQLParser()
-    results = parser.parse_file(str(PROJ / "test.sql"))
+    results = parser.parse_file(str(PROJ / "demo.sql"))
     r = results[0]
     assert len(r["relationships"]) == 2, \
         f"Expected 2 relationships, got {len(r['relationships'])}"
@@ -74,18 +74,18 @@ def test_relationships():
 
 def test_fields():
     parser = SQLParser()
-    results = parser.parse_file(str(PROJ / "test.sql"))
+    results = parser.parse_file(str(PROJ / "demo.sql"))
     r = results[0]
-    # qmkg_user_passive_features_rd should have uid, active_level, passive_type
+    # user_daily_features should have user_id, activity_level, interaction_type
     for t in r["tables"]:
-        if t["table"] == "qmkg_user_passive_features_rd":
+        if t["table"] == "user_daily_features":
             names = {f["name"] for f in t["fields"]}
-            assert "uid" in names, "Missing uid field"
-            assert "active_level" in names, "Missing active_level field"
-            assert "passive_type" in names, "Missing passive_type field"
+            assert "user_id" in names, "Missing user_id field"
+            assert "activity_level" in names, "Missing activity_level field"
+            assert "interaction_type" in names, "Missing interaction_type field"
             print(f"  [OK] fields: {t['table']} has {len(t['fields'])} fields: {names}")
             return
-    assert False, "Table qmkg_user_passive_features_rd not found"
+    assert False, "Table user_daily_features not found"
 
 
 if __name__ == "__main__":

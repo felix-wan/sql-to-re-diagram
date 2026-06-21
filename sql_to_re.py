@@ -114,10 +114,58 @@ class SQLParser:
         tokens = sql.split()
         return tokens
 
+    @staticmethod
+    def _strip_comments(sql: str) -> str:
+        """Strip SQL comments (-- and /* */) while preserving strings."""
+        result = []
+        i = 0
+        in_string = False
+        string_char = None
+        n = len(sql)
+
+        while i < n:
+            ch = sql[i]
+
+            # Handle string literals
+            if ch in ("'", '"') and not in_string:
+                in_string = True
+                string_char = ch
+                result.append(ch)
+                i += 1
+                continue
+            if in_string:
+                result.append(ch)
+                if ch == string_char and (i == 0 or sql[i - 1] != '\\'):
+                    in_string = False
+                i += 1
+                continue
+
+            # Single-line comment --
+            if ch == '-' and i + 1 < n and sql[i + 1] == '-':
+                end = sql.find('\n', i + 2)
+                i = n if end == -1 else end + 1
+                result.append(' ')  # keep token separation
+                continue
+
+            # Block comment /* */
+            if ch == '/' and i + 1 < n and sql[i + 1] == '*':
+                end = sql.find('*/', i + 2)
+                i = n if end == -1 else end + 2
+                result.append(' ')
+                continue
+
+            result.append(ch)
+            i += 1
+
+        return ''.join(result)
+
     def _parse_statement(self, sql: str) -> Optional[Dict]:
         """Parse a single SQL statement."""
         self.tables = {}
         self.alias_map = {}
+
+        # Strip SQL comments before parsing
+        sql = self._strip_comments(sql)
 
         # Work with normalized SQL
         sql_norm = re.sub(r'\s+', ' ', sql).strip()

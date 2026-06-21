@@ -19,7 +19,7 @@
 
 ```bash
 # 解析 SQL 并生成 HTML
-python sql_to_re.py test.sql
+python sql_to_re.py demo.sql
 
 # 指定输出路径
 python sql_to_re.py test_multi.sql output.html

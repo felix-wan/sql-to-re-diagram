@@ -11,5 +11,6 @@ Thumbs.db
 .vscode/
 .idea/
 
-# Generated HTML (optional: uncomment to exclude)
-# *.html
+# Sensitive: real internal SQL data - DO NOT COMMIT
+test.sql
+test_re.html
